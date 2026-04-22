@@ -2,22 +2,121 @@
 <html>
 <head>
     <title>AI vs Real Classifier</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            margin-top: 50px;
+            width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result h3 {
+            color: #222;
+            margin-bottom: 5px;
+        }
+
+        .result h4 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .container {
+                width: 90%;
+                margin-top: 30px;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h2>Upload an Image</h2>
+    <div class="container">
 
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Predict</button>
-    </form>
+        <h2>Upload an Image</h2>
 
-    {% if prediction %}
-        <h3>Prediction: {{ prediction }}</h3>
-        <h4>Confidence: {{ confidence }}%</h4>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Predict</button>
+        </form>
 
-        <img src="data:image/jpeg;base64,{{ image_data }}" width="300">
-    {% endif %}
+        {% if prediction %}
+        <div class="result">
+
+            <h3>Prediction: {{ prediction }}</h3>
+            <h4>Confidence: {{ confidence }}%</h4>
+
+            <img src="data:image/jpeg;base64,{{ image_data }}">
+
+        </div>
+        {% endif %}
+
+    </div>
 
 </body>
 </html>
