@@ -3,7 +3,7 @@ from flask import Flask, request, render_template
 import os
 
 # Load trained model
-model = YOLO("runs/classify/train/weights/best.pt")
+model = YOLO("best.pt")
 
 app = Flask(__name__)
 
