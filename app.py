@@ -36,5 +36,3 @@ def index():
             )
 
     return render_template("index.html", prediction=None)
-
-app.run(debug=True)
