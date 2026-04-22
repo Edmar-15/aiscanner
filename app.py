@@ -1,14 +1,12 @@
 from ultralytics import YOLO
 from flask import Flask, request, render_template
-import os
+from PIL import Image
+import io
 
 # Load trained model
 model = YOLO("best.pt")
 
 app = Flask(__name__)
-
-UPLOAD_FOLDER = "static/uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -16,11 +14,12 @@ def index():
         file = request.files.get("file")
 
         if file and file.filename != "":
-            filepath = os.path.join(UPLOAD_FOLDER, file.filename)
-            file.save(filepath)
+            # Read file into memory
+            image_bytes = file.read()
+            image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
 
-            # Run prediction
-            results = model(filepath)
+            # Run prediction directly
+            results = model(image)
 
             for r in results:
                 probs = r.probs
@@ -31,10 +30,7 @@ def index():
                 "index.html",
                 prediction=prediction,
                 confidence=round(confidence * 100, 2),
-                image_path=filepath
+                image_data=image_bytes  # optional if you want to display
             )
 
     return render_template("index.html", prediction=None)
-
-if __name__ == "__main__":
-    app.run(debug=True)
